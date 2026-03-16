@@ -6,7 +6,6 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\HtmlFilterService;
-use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
@@ -28,12 +27,12 @@ class ArticleController extends Controller
     public function search(Request $request){
         
         // UNSECURE
-        $articles = Article::whereRaw("title like '%{$request->search}%'")->get();
+        // $articles = Article::whereRaw("title like '%{$request->search}%'")->get();
 
         // SECURE
-        // $articles = Article::where('title', 'LIKE', "%{$request->search}%")
-        //                     ->orWhere('content', 'LIKE', "%{$request->search}%")
-        // ->get();
+        $articles = Article::where('title', 'LIKE', "%{$request->search}%")
+                            ->orWhere('content', 'LIKE', "%{$request->search}%")
+        ->get();
         
         return view('articles.index',compact('articles'));
     }
